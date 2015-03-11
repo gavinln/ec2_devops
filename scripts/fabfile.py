@@ -1,8 +1,7 @@
 from __future__ import print_function
 
 from fabric.api import run, env, task, roles, local, lcd
-from fabric.api import open_shell
-from fabric.contrib.project import rsync_project
+from fabric.api import open_shell, put
 from fabric.api import settings
 
 import os
@@ -138,6 +137,7 @@ def host(instance=None):
     user = 'ubuntu'
     if ip_address:
         print('Setting host: {}@{}'.format(user, ip_address))
+        print('Setting key_file: {}'.format(pem_path))
         env.user = 'ubuntu'
         env.hosts = [ip_address]
         env.key_filename = pem_path
@@ -147,5 +147,18 @@ def host(instance=None):
 def upload():
     ''' upload project to a ec2 instance '''
     check_host_connection('upload')
-    run('ifconfig')
-    # rsync_project(remote_dir='')
+    root_dir = os.path.normpath(os.path.join(script_dir, '..'))
+
+    print(root_dir)
+    project_name = os.path.basename(root_dir)
+    dest_name = '~/' + project_name
+
+    run('mkdir -p {}'.format(dest_name))
+
+    files = os.listdir(root_dir)
+    ignore_files = ['.git', '.vagrant', 'do_not_checkin']
+    for filename in files:
+        if filename not in ignore_files:
+            local_file = os.path.join(root_dir, filename)
+            print(local_file)
+            put(local_file, dest_name)
