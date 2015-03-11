@@ -94,6 +94,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "puppet" do |puppet|
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
+      # puppet.hiera_config_path = "hiera.yaml"
       # puppet.options = "--verbose --debug"
       # need to have git setup on the host to work correctly
       puppet.facter = {
