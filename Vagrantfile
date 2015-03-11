@@ -103,5 +103,5 @@ Vagrant.configure(2) do |config|
       }
   end
 
-  config.vm.post_up_message = "To ssh to the machine type: vagrant up"
+  config.vm.post_up_message = "To ssh to the machine type: vagrant ssh"
 end
