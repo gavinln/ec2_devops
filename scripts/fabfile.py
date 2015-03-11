@@ -1,105 +1,88 @@
 from __future__ import print_function
+
 from fabric.api import run, env, task, roles, local, lcd
-
-
 import os
 import shutil
+import yaml
+import sys
+
+from aws_ops import run_instance
+from aws_ops import get_connection
+from aws_ops import stop_instances
+from aws_ops import terminate_instances
+from aws_ops import quote_items
+from aws_ops import get_only_instances
+
+from aws_ops import instance_attrs
+from aws_ops import instance_values
 
 
 script_dir = os.path.dirname(__file__)
 
-
-def get_docker_path(dockerDir):
-    return os.path.normpath(
-        os.path.join(script_dir, '..', 'docker', dockerDir))
+with open(os.path.join(script_dir, "config.yaml"), "r") as f:
+    config = yaml.load(f)
 
 
-def get_jenkins_root():
-    return get_docker_path('jenkins')
+def check_instance(config, instance):
+    if not instance:
+        print('No instance specified')
 
-
-def get_nodejs_root():
-    return get_docker_path('nodejs')
-
-
-def get_selenium_root():
-    return get_docker_path('selenium')
-
-
-def get_python_root():
-    return os.path.normpath(
-        os.path.join(script_dir, '..', 'python'))
+    if instance not in config.keys():
+        instances = quote_items(config.keys())
+        instance_str = ', '.join(instances)
+        print('instance should be one of {}'.format(instance_str))
+        sys.exit(1)
 
 
 @task
-def jk_master_start():
-    ''' start jenkins master '''
-    with lcd(get_jenkins_root()):
-        local('sudo fig up -d ciserver')
-        local('sudo fig ps ciserver')
+def aws_start(instance=None):
+    ''' start aws instance '''
+    check_instance(config, instance)
+    conn = get_connection()
+    cfg_instance = config[instance]
+    run_instance(conn, cfg_instance['image_id'], cfg_instance['key_name'],
+                 cfg_instance['instance_type'])
 
 
 @task
-def jk_master_stop():
-    ''' stop jenkins master '''
-    with lcd(get_jenkins_root()):
-        local('sudo fig stop ciserver')
+def aws_terminate():
+    ''' terminate aws instances '''
+    conn = get_connection()
+    terminate_instances(conn)
 
 
 @task
-def jk_slave_start():
-    ''' start jenkins nodejs slave '''
-    with lcd(get_nodejs_root()):
-        local('sudo fig up -d cislave')
+def aws_ssh(instance=None):
+    ''' ssh into instance - not working '''
+    check_instance(config, instance)
+    cfg_instance = config[instance]
+    pem_path = os.path.normpath(os.path.join(
+        script_dir, '..', 'do_not_checkin',
+        cfg_instance['key_name'] + '.pem'))
+
+    conn = get_connection()
+    instances = get_only_instances(
+            conn, filters={'key_name': instance})
+    ip_address = None
+    instance_running = False
+    for inst in instances:
+        if inst.state == 'running':
+            instance_running = True
+            if inst.private_ip_address:
+                ip_address = inst.private_ip_address
+            break
+    if ip_address:
+        local('ssh -i "{}" ubuntu@{}'.format(pem_path, ip_address))
+    elif instance_running is False:
+        print('No running instance of {} found'.format(instance))
+    else:
+        print('No private ip address available')
 
 
 @task
-def jk_slave_stop():
-    ''' stop jenkins nodejs slave '''
-    with lcd(get_nodejs_root()):
-        local('sudo fig stop cislave')
-
-
-@task
-def jk_status():
-    ''' status of jenkins master & slave '''
-    with lcd(get_jenkins_root()):
-        local('sudo fig ps')
-    with lcd(get_nodejs_root()):
-        local('sudo fig ps')
-
-
-@task
-def sl_grid_start():
-    ''' start selenium hub & node '''
-    with lcd(get_selenium_root()):
-        local('sudo fig up -d hub node')
-        local('sudo fig ps node')
-
-
-@task
-def sl_grid_stop():
-    ''' stop selenium hub & node '''
-    with lcd(get_selenium_root()):
-        local('sudo fig stop hub node')
-
-
-@task
-def sl_standalone_start():
-    ''' start selenium standalone '''
-    with lcd(get_selenium_root()):
-        local('sudo fig up -d standalone')
-
-
-@task
-def sl_standalone_stop():
-    ''' stop selenium standalone '''
-    with lcd(get_selenium_root()):
-        local('sudo fig stop standalone')
-
-
-@task
-def run_test():
-    ''' run python test scripts '''
-    with lcd(get_python_root()):
-    	local('python selenium_test.py')
+def aws_instances():
+    ''' get aws instances '''
+    conn = get_connection()
+    print(', '.join(instance_attrs()))
+    for instance in get_only_instances(conn):
+        print(', '.join(instance_values(instance)))

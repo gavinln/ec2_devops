@@ -1,0 +1,8 @@
+celery_redis:
+  image_id: ami-5c120b19
+  key_name: celery_redis
+  instance_type: t2.micro
+
+workers:
+  - worker0
+  - worker1
