@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 from fabric.api import run, env, task, roles, local, lcd
+from fabric.api import open_shell
 from fabric.contrib.project import rsync_project
 from fabric.api import settings
 
@@ -111,16 +112,10 @@ def get_ip_address(instance, key_name):
 
 
 @task
-def ssh(instance=None):
-    ''' ssh into instance - not working '''
-    check_instance(config, instance)
-    cfg_instance = config[instance]
-    key_name = cfg_instance['key_name']
-    pem_path = get_ssh_key(key_name)
-    ip_address = get_ip_address(instance, key_name)
-
-    if ip_address:
-        local('ssh -i "{}" ubuntu@{}'.format(pem_path, ip_address))
+def shell():
+    ''' ssh into ec2 instance '''
+    check_host_connection('shell')
+    open_shell()
 
 
 @task
@@ -130,8 +125,6 @@ def instances():
     print(', '.join(instance_names()))
     for instance in get_only_instances(conn):
         print(', '.join(instance_values(instance)))
-
-# -i ..\do_not_checkin\celery_redis.pem -H ubuntu@10.131.129.59
 
 
 @task
@@ -154,5 +147,5 @@ def host(instance=None):
 def upload():
     ''' upload project to a ec2 instance '''
     check_host_connection('upload')
-    run('uname -a')
+    run('ifconfig')
     # rsync_project(remote_dir='')
