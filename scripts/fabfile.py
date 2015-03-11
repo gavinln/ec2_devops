@@ -112,9 +112,17 @@ def get_ip_address(instance, key_name):
 
 @task
 def shell():
-    ''' ssh into ec2 instance '''
+    ''' ssh into ec2 instance - does not work properly '''
     check_host_connection('shell')
-    open_shell()
+    open_shell('export TERM=ansi')
+
+
+@task
+def ssh():
+    ''' ssh into ec2 instance '''
+    check_host_connection('ssh')
+    local('ssh -i "{}" {}@{}'.format(
+        env.key_filename, env.user, env.host_string))
 
 
 @task
@@ -162,3 +170,11 @@ def upload():
             local_file = os.path.join(root_dir, filename)
             print(local_file)
             put(local_file, dest_name)
+
+
+'''
+Need to install puppet modules
+puppet/install_puppet_modules.sh
+
+puppet apply --modulepath=puppet/manifests puppet/manifests/default.pp
+'''
