@@ -1,6 +1,9 @@
 from __future__ import print_function
 
 from fabric.api import run, env, task, roles, local, lcd
+from fabric.contrib.project import rsync_project
+from fabric.api import settings
+
 import os
 import shutil
 import yaml
@@ -26,6 +29,10 @@ script_dir = os.path.dirname(__file__)
 with open(os.path.join(script_dir, "config.yaml"), "r") as f:
     config = yaml.load(f)
 
+env.user = None
+env.host_string = None
+env.key_filename = None
+
 
 def check_instance(config, instance):
     if not instance:
@@ -35,6 +42,16 @@ def check_instance(config, instance):
         instances = quote_items(config.keys())
         instance_str = ', '.join(instances)
         print('instance should be one of {}'.format(instance_str))
+        sys.exit(1)
+
+
+def check_host_connection(task_name):
+    if any([env.user is None,
+           env.host_string is None,
+           env.key_filename is None]):
+        msg = 'Use "host" task before the "{}" task to setup the ' \
+            'host connection info'
+        print(msg.format(task_name))
         sys.exit(1)
 
 
@@ -60,15 +77,15 @@ def terminate():
     terminate_instances(conn)
 
 
-@task
-def ssh(instance=None):
-    ''' ssh into instance - not working '''
-    check_instance(config, instance)
-    cfg_instance = config[instance]
-    pem_path = os.path.normpath(os.path.join(
-        script_dir, '..', 'do_not_checkin',
-        cfg_instance['key_name'] + '.pem'))
+def get_ssh_key(key_name):
+    key_file = os.path.normpath(os.path.join(
+        script_dir, '..', 'do_not_checkin', key_name + '.pem'))
+    if os.path.exists(key_file):
+        return key_file
+    raise Exception('Key file {} does not exist'.format(key_file))
 
+
+def get_ip_address(instance, key_name):
     conn = get_connection()
     instances = get_only_instances(
             conn, filters={'key_name': instance})
@@ -83,15 +100,27 @@ def ssh(instance=None):
             break
         elif inst.state == 'pending':
             pending_instances.append(inst)
+    if not ip_address:
+        if len(pending_instances) > 0:
+            print('Pending instance of {} found'.format(instance))
+        elif len(running_instances) == 0:
+            print('No running instance of {} found'.format(instance))
+        else:
+            print('No private ip address available')
+    return ip_address
+
+
+@task
+def ssh(instance=None):
+    ''' ssh into instance - not working '''
+    check_instance(config, instance)
+    cfg_instance = config[instance]
+    key_name = cfg_instance['key_name']
+    pem_path = get_ssh_key(key_name)
+    ip_address = get_ip_address(instance, key_name)
 
     if ip_address:
         local('ssh -i "{}" ubuntu@{}'.format(pem_path, ip_address))
-    elif len(pending_instances) > 0:
-        print('Pending instance of {} found'.format(instance))
-    elif len(running_instances) == 0:
-        print('No running instance of {} found'.format(instance))
-    else:
-        print('No private ip address available')
 
 
 @task
@@ -101,3 +130,29 @@ def instances():
     print(', '.join(instance_names()))
     for instance in get_only_instances(conn):
         print(', '.join(instance_values(instance)))
+
+# -i ..\do_not_checkin\celery_redis.pem -H ubuntu@10.131.129.59
+
+
+@task
+def host(instance=None):
+    ''' set ec2 host '''
+    check_instance(config, instance)
+    cfg_instance = config[instance]
+    key_name = cfg_instance['key_name']
+    ip_address = get_ip_address(instance, key_name)
+    pem_path = get_ssh_key(key_name)
+    user = 'ubuntu'
+    if ip_address:
+        print('Setting host: {}@{}'.format(user, ip_address))
+        env.user = 'ubuntu'
+        env.hosts = [ip_address]
+        env.key_filename = pem_path
+
+
+@task
+def upload():
+    ''' upload project to a ec2 instance '''
+    check_host_connection('upload')
+    run('uname -a')
+    # rsync_project(remote_dir='')
