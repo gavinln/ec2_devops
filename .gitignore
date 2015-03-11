@@ -1,0 +1,7 @@
+*~
+*.pyc
+*.class
+*.swp
+.vagrant
+.idea/
+do_not_checkin
