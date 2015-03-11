@@ -24,7 +24,8 @@ apt-get install puppet-common -y
 """
 
 
-def run_instance(conn, image_id, key_name, instance_type):
+def run_instance(conn, image_id='ami-5c120b19',
+                 key_name='celery_redis', instance_type='t2.micro'):
     reservation = conn.run_instances(
         image_id=image_id,
         key_name=key_name,
@@ -44,14 +45,31 @@ def quote_items(items):
     return ["'{}'".format(str(item)) for item in items]
 
 
-def instance_attrs():
+def combine_name_values(names, values, sep='=', attr_sep=', '):
+    name_values = [(name, value) for name, value in zip(
+        names, values)]
+    return attr_sep.join("{}{}{}".format(
+        name, sep, value) for name, value in name_values)
+
+
+def reservation_names():
+    return ['id', 'region', 'owner_id']
+
+
+def reservation_values(reservation):
+    values = [reservation.__getattribute__(
+        attribute) for attribute in reservation_names()]
+    return values
+
+
+def instance_names():
     return ['id', 'instance_type', 'state', 'image_id', 'private_ip_address',
             'key_name', 'launch_time', 'Name']
 
 
 def instance_values(instance):
     values = [instance.__getattribute__(
-        attribute) for attribute in instance_attrs()[:-1]]
+        attribute) for attribute in instance_names()[:-1]]
 
     def blank_if_none(item):
         return item if item else ''

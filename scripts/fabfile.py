@@ -13,9 +13,13 @@ from aws_ops import terminate_instances
 from aws_ops import quote_items
 from aws_ops import get_only_instances
 
-from aws_ops import instance_attrs
+from aws_ops import instance_names
 from aws_ops import instance_values
 
+from aws_ops import reservation_names
+from aws_ops import reservation_values
+
+from aws_ops import combine_name_values
 
 script_dir = os.path.dirname(__file__)
 
@@ -35,24 +39,29 @@ def check_instance(config, instance):
 
 
 @task
-def aws_start(instance=None):
-    ''' start aws instance '''
+def start(instance=None):
+    ''' start ec2 instance '''
     check_instance(config, instance)
     conn = get_connection()
     cfg_instance = config[instance]
-    run_instance(conn, cfg_instance['image_id'], cfg_instance['key_name'],
-                 cfg_instance['instance_type'])
+    reservation = run_instance(
+        conn, cfg_instance['image_id'], cfg_instance['key_name'],
+        cfg_instance['instance_type'])
+    print(combine_name_values(reservation_names(), reservation_values(
+      reservation)))
+    for instance in reservation.instances:
+        print(', '.join(instance_values(instance)))
 
 
 @task
-def aws_terminate():
-    ''' terminate aws instances '''
+def terminate():
+    ''' terminate ec2 instances '''
     conn = get_connection()
     terminate_instances(conn)
 
 
 @task
-def aws_ssh(instance=None):
+def ssh(instance=None):
     ''' ssh into instance - not working '''
     check_instance(config, instance)
     cfg_instance = config[instance]
@@ -80,9 +89,9 @@ def aws_ssh(instance=None):
 
 
 @task
-def aws_instances():
-    ''' get aws instances '''
+def instances():
+    ''' get ec2 instances '''
     conn = get_connection()
-    print(', '.join(instance_attrs()))
+    print(', '.join(instance_names()))
     for instance in get_only_instances(conn):
         print(', '.join(instance_values(instance)))
