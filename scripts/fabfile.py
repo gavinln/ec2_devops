@@ -73,16 +73,22 @@ def ssh(instance=None):
     instances = get_only_instances(
             conn, filters={'key_name': instance})
     ip_address = None
-    instance_running = False
+    running_instances = []
+    pending_instances = []
     for inst in instances:
         if inst.state == 'running':
-            instance_running = True
+            running_instances.append(inst)
             if inst.private_ip_address:
                 ip_address = inst.private_ip_address
             break
+        elif inst.state == 'pending':
+            pending_instances.append(inst)
+
     if ip_address:
         local('ssh -i "{}" ubuntu@{}'.format(pem_path, ip_address))
-    elif instance_running is False:
+    elif len(pending_instances) > 0:
+        print('Pending instance of {} found'.format(instance))
+    elif len(running_instances) == 0:
         print('No running instance of {} found'.format(instance))
     else:
         print('No private ip address available')
