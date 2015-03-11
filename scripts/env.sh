@@ -4,7 +4,8 @@
 
 DEPLOY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export AWS_CONFIG_FILE=/vagrant/do_not_checkin/config
+export AWS_CONFIG_FILE=/vagrant/do_not_checkin/aws.cfg
+export BOTO_CONFIG=/vagrant/do_not_checkin/boto.cfg
 
 function system-info() {
   fab -f $DEPLOY_DIR/fabfile.py $*
