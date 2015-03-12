@@ -16,3 +16,9 @@ aws_secret_access_key=<aws_secret_access_key>
 
 To start an ec2 instance
 fab ec2_start:celery_redis
+
+pip install pyyaml
+pip install boto
+
+conda install fabric
+
