@@ -8,10 +8,18 @@ import datetime as dt
 
 from boto import ec2
 import os
+import sys
 
 
 def get_connection():
-    conn = ec2.connect_to_region('us-west-2')
+    region_key = 'EC2_REGION'
+    if region_key not in os.environ:
+        print('Environment variable {} not set'.format(
+            region_key))
+        sys.exit(1)
+
+    ec2_region = os.environ['EC2_REGION']
+    conn = ec2.connect_to_region(ec2_region)
     return conn
 
 
@@ -22,17 +30,18 @@ apt-get install puppet-common -y
 """
 
 
-#def run_instance(conn, image_id='ami-5c120b19',
-#                 key_name='celery_redis', instance_type='t2.micro'):
-def run_instances(conn, image_id='ami-29ebb519', key_name='angular',
-                  instance_type='t2.micro', security_group_ids=None,
-                  subnet_id=None):
+def run_instances(conn, image_id='ami-5c120b19',
+                  key_name='celery_redis', instance_type='t2.micro',
+                  security_group_ids=None, subnet_id=None):
+#def run_instances(conn, image_id='ami-29ebb519', key_name='angular',
+#                  instance_type='t2.micro', security_group_ids=None,
+#                  subnet_id=None):
     reservation = conn.run_instances(
         image_id=image_id,
         key_name=key_name,
         instance_type=instance_type,
         security_group_ids=security_group_ids,
-        #subnet_id=os.environ['SUBNET_ID'],
+        subnet_id=os.environ['SUBNET_ID'],
         #subnet_id=subnet_id,
         instance_initiated_shutdown_behavior='terminate',
         user_data=my_code)
@@ -125,6 +134,7 @@ def stop_instances(conn):
 
 
 def terminate_instances(conn):
-    instances = get_only_instances(conn)
+    filters = {'key_name': ['celery_redis', 'angular']}
+    instances = get_only_instances(conn, filters=filters)
     for instance in instances:
         conn.terminate_instances(instance.id)
