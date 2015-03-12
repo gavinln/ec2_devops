@@ -5,7 +5,6 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 # setup ohmyzsh
 if [ ! -d ~/.oh-my-zsh ]; then
     wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O - | sh
-    chsh -s /bin/zsh
 fi
 
 
@@ -27,4 +26,5 @@ fi
 # setup ohmyzsh plugins
 sed -i "s/plugins=(git)/plugins=(git fabric aws)/" $ZSHRC
 
+sudo chsh -s /bin/zsh $USER
 
