@@ -1,25 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-
-$script = <<SCRIPT
-
-    # Exit on any errors.
-    set -e
-
-    PUPPET_INSTALL='puppet module install \
-      --module_repository http://forge.puppetlabs.com'
-
-    # install puppet modules
-    (puppet module list | grep acme-ohmyzsh) ||
-        $PUPPET_INSTALL -v 0.1.2 acme-ohmyzsh
-
-    (puppet module list | grep garethr-docker) ||
-        $PUPPET_INSTALL -v 2.2.0 garethr-docker
-
-SCRIPT
-
-
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -92,9 +73,11 @@ Vagrant.configure(2) do |config|
   # config.vm.provision "shell", inline: $script
   config.vm.provision "shell", path: 'puppet/install_puppet_modules.sh'
 
-  config.vm.provision "puppet" do |puppet|
+  config.vm.define :celery_redis, autostart: false do |celery_redis|
+    celery_redis.vm.provision "puppet" do |puppet|
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
+      puppet.options = "--certname=%s" % :celery_redis
       # puppet.hiera_config_path = "hiera.yaml"
       # puppet.options = "--verbose --debug"
       # need to have git setup on the host to work correctly
@@ -102,7 +85,22 @@ Vagrant.configure(2) do |config|
         "git_name"    => `git config --get user.name`,
         "git_email"   => `git config --get user.email`
       }
+    end
   end
 
-  config.vm.post_up_message = "To ssh to the machine type: vagrant ssh"
+  config.vm.define :other, autostart: false do |other|
+    other.vm.provision "puppet" do |puppet|
+      puppet.manifest_file  = "default.pp"
+      puppet.manifests_path = "puppet/manifests"
+      puppet.options = "--certname=%s" % :other
+      # puppet.hiera_config_path = "hiera.yaml"
+      # puppet.options = "--verbose --debug"
+      # need to have git setup on the host to work correctly
+      puppet.facter = {
+        "git_name"    => `git config --get user.name`,
+        "git_email"   => `git config --get user.email`
+      }
+    end
+  end
+
 end

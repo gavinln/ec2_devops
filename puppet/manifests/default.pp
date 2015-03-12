@@ -10,10 +10,24 @@ Exec {
     path => "/usr/local/bin:/usr/bin:/usr/sbin:/sbin:/bin",
 }
 
-class {
-    init: ;
-    python_setup:;
-    ohmyzsh_setup:;
+node 'celery_redis' {
+    class {
+        init: ;
+        #python_setup:;
+        #ohmyzsh_setup:;
+    }
+    notify { 'Hello World celery_redis': }
 }
+
+node 'other' {
+    class {
+        init: ;
+        #python_setup:;
+        #ohmyzsh_setup:;
+    }
+    notify { 'Hello World other': }
+}
+
+
 
 
