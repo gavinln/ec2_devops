@@ -13,10 +13,9 @@ Exec {
 node 'celery_redis' {
     class {
         init: ;
-        #python_setup:;
-        #ohmyzsh_setup:;
+        python_setup:;
+        ohmyzsh_setup:;
     }
-    notify { 'Hello World celery_redis': }
 }
 
 node 'angular' {
@@ -26,7 +25,6 @@ node 'angular' {
         #python_setup:;
         #ohmyzsh_setup:;
     }
-    notify { 'Hello World other': }
 }
 
 
