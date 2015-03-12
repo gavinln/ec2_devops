@@ -11,11 +11,9 @@ import os
 
 
 def get_connection():
-    conn = ec2.connect_to_region(
-        'us-west-1',
-        aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
-        aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'])
+    conn = ec2.connect_to_region('us-west-2')
     return conn
+
 
 my_code = """#!/bin/bash
 
@@ -24,14 +22,18 @@ apt-get install puppet-common -y
 """
 
 
-def run_instance(conn, image_id='ami-5c120b19',
-                 key_name='celery_redis', instance_type='t2.micro'):
+#def run_instance(conn, image_id='ami-5c120b19',
+#                 key_name='celery_redis', instance_type='t2.micro'):
+def run_instance(conn, image_id='ami-29ebb519', key_name='angular',
+                 instance_type='t2.micro', security_group_ids=None,
+                 subnet_id=None):
     reservation = conn.run_instances(
         image_id=image_id,
         key_name=key_name,
         instance_type=instance_type,
-        security_group_ids=[os.environ['SECURITY_GROUP_ID']],
-        subnet_id=os.environ['SUBNET_ID'],
+        security_group_ids=security_group_ids,
+        #subnet_id=os.environ['SUBNET_ID'],
+        #subnet_id=subnet_id,
         instance_initiated_shutdown_behavior='terminate',
         user_data=my_code)
     return reservation
@@ -123,6 +125,6 @@ def stop_instances(conn):
 
 
 def terminate_instances(conn):
-    instances = get_all_instances(conn)
+    instances = get_only_instances(conn)
     for instance in instances:
-        conn.terminate_instances(instance)
+        conn.terminate_instances(instance.id)

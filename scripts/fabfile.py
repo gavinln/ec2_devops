@@ -78,9 +78,9 @@ def start(instance=None):
     cfg_instance = config[instance]
     reservation = run_instance(
         conn, cfg_instance['image_id'], cfg_instance['key_name'],
-        cfg_instance['instance_type'])
+        cfg_instance['instance_type'], cfg_instance['security_group_ids'])
     print(combine_name_values(reservation_names(), reservation_values(
-      reservation)))
+        reservation)))
     for instance in reservation.instances:
         print(', '.join(instance_values(instance)))
 

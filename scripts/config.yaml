@@ -3,6 +3,13 @@ celery_redis:
   key_name: celery_redis
   instance_type: t2.micro
 
+angular:
+  image_id: ami-29ebb519
+  key_name: angular
+  instance_type: t2.micro
+  security_group_ids:
+    - sg-89eedbec
+
 workers:
   - worker0
   - worker1
