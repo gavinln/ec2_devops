@@ -22,3 +22,7 @@ pip install boto
 
 conda install fabric
 
+TODO: Should create a sqlite database that stores
+1. instance.id, config.yaml (name)
+
+

@@ -6,7 +6,7 @@ celery_redis:
 angular:
   image_id: ami-29ebb519
   key_name: angular
-  instance_type: t2.micro
+  instance_type: t2.small
   security_group_ids:
     - sg-89eedbec
 

@@ -65,8 +65,8 @@ def reservation_values(reservation):
 
 
 def instance_names():
-    return ['id', 'instance_type', 'state', 'image_id', 'private_ip_address',
-            'ip_address', 'key_name', 'launch_time', 'Name']
+    return ['id', 'instance_type', 'state', 'image_id', 'key_name',
+            'ip_address', 'private_ip_address', 'launch_time', 'Name']
 
 
 def instance_values(instance):
