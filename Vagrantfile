@@ -88,18 +88,14 @@ Vagrant.configure(2) do |config|
     end
   end
 
-  config.vm.define :other, autostart: false do |other|
-    other.vm.provision "puppet" do |puppet|
+  config.vm.define :angular, autostart: false do |angular|
+    angular.vm.provision "puppet" do |puppet|
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
-      puppet.options = "--certname=%s" % :other
+      puppet.options = "--certname=%s" % :angular
       # puppet.hiera_config_path = "hiera.yaml"
       # puppet.options = "--verbose --debug"
       # need to have git setup on the host to work correctly
-      puppet.facter = {
-        "git_name"    => `git config --get user.name`,
-        "git_email"   => `git config --get user.email`
-      }
     end
   end
 
