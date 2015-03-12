@@ -18,7 +18,7 @@ import sys
 from aws_ops import get_connection
 from aws_ops import get_only_instances
 
-from aws_ops import run_instance
+from aws_ops import run_instances
 from aws_ops import stop_instances
 from aws_ops import terminate_instances
 from aws_ops import quote_items
@@ -38,7 +38,7 @@ env.host_string = None
 env.key_filename = None
 
 
-def check_instance(config, instance):
+def check_instance(config, instance, ip=None):
     if not instance:
         print('No instance specified')
 
@@ -47,6 +47,9 @@ def check_instance(config, instance):
         instance_str = ', '.join(instances)
         print('instance should be one of {}'.format(instance_str))
         sys.exit(1)
+
+    if ip not in (None, 'public'):
+        print('ip should be either "public" or unspecified (default private)')
 
 
 def check_host_connection(task_name):
@@ -74,7 +77,7 @@ def start(instance=None):
     check_instance(config, instance)
     conn = get_connection()
     cfg_instance = config[instance]
-    reservation = run_instance(
+    reservation = run_instances(
         conn, cfg_instance['image_id'], cfg_instance['key_name'],
         cfg_instance['instance_type'], cfg_instance['security_group_ids'])
     print(combine_name_values(reservation_names(), reservation_values(
@@ -98,7 +101,7 @@ def get_ssh_key(key_name):
     raise Exception('Key file {} does not exist'.format(key_file))
 
 
-def get_ip_address(instance, key_name):
+def get_ip_address(instance, key_name, ip):
     conn = get_connection()
     instances = get_only_instances(conn, filters={'key_name': instance})
     ip_address = None
@@ -107,8 +110,12 @@ def get_ip_address(instance, key_name):
     for inst in instances:
         if inst.state == 'running':
             running_instances.append(inst)
-            if inst.private_ip_address:
-                ip_address = inst.private_ip_address
+            if ip == 'public':
+                if inst.ip_address:
+                    ip_address = inst.ip_address
+            else:
+                if inst.private_ip_address:
+                    ip_address = inst.private_ip_address
             break
         elif inst.state == 'pending':
             pending_instances.append(inst)
@@ -118,7 +125,7 @@ def get_ip_address(instance, key_name):
         elif len(running_instances) == 0:
             print('No running instance of {} found'.format(instance))
         else:
-            print('No private ip address available')
+            print('No ip address available')
     return ip_address
 
 
@@ -147,12 +154,12 @@ def instances():
 
 
 @task
-def host(instance=None):
+def host(instance=None, ip=None):
     ''' set ec2 host '''
-    check_instance(config, instance)
+    check_instance(config, instance, ip)
     cfg_instance = config[instance]
     key_name = cfg_instance['key_name']
-    ip_address = get_ip_address(instance, key_name)
+    ip_address = get_ip_address(instance, key_name, ip)
     pem_path = get_ssh_key(key_name)
     user = 'ubuntu'
     if ip_address:

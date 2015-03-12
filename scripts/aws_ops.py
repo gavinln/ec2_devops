@@ -24,9 +24,9 @@ apt-get install puppet-common -y
 
 #def run_instance(conn, image_id='ami-5c120b19',
 #                 key_name='celery_redis', instance_type='t2.micro'):
-def run_instance(conn, image_id='ami-29ebb519', key_name='angular',
-                 instance_type='t2.micro', security_group_ids=None,
-                 subnet_id=None):
+def run_instances(conn, image_id='ami-29ebb519', key_name='angular',
+                  instance_type='t2.micro', security_group_ids=None,
+                  subnet_id=None):
     reservation = conn.run_instances(
         image_id=image_id,
         key_name=key_name,
@@ -66,7 +66,7 @@ def reservation_values(reservation):
 
 def instance_names():
     return ['id', 'instance_type', 'state', 'image_id', 'private_ip_address',
-            'key_name', 'launch_time', 'Name']
+            'ip_address', 'key_name', 'launch_time', 'Name']
 
 
 def instance_values(instance):
