@@ -19,9 +19,10 @@ node 'celery_redis' {
     notify { 'Hello World celery_redis': }
 }
 
-node 'other' {
+node 'angular' {
     class {
         init: ;
+        javascript: require => Class[init];
         #python_setup:;
         #ohmyzsh_setup:;
     }

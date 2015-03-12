@@ -11,3 +11,6 @@ PUPPET_INSTALL='puppet module install --module_repository http://forge.puppetlab
 
 (puppet module list | grep garethr-docker) ||
     $PUPPET_INSTALL -v 2.2.0 garethr-docker
+
+(puppet module list | grep willdurand-nodejs) ||
+    $PUPPET_INSTALL -v 1.8.3 willdurand-nodejs
