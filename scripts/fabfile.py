@@ -1,6 +1,7 @@
 '''
 TODO: May need to fix error in
-http://askubuntu.com/questions/59458/error-message-when-i-run-sudo-unable-to-resolve-host-none
+http://askubuntu.com/questions/59458/
+error-message-when-i-run-sudo-unable-to-resolve-host-none
 '''
 from __future__ import print_function
 
@@ -201,4 +202,6 @@ def puppet_apply():
         with cd(project_root):
             run('chmod +x ./puppet/install_puppet_modules.sh')
             sudo('./puppet/install_puppet_modules.sh')
-            sudo('puppet apply puppet/manifests/default.pp')
+            vm_name, ext = os.path.splitext(os.path.basename(env.key_filename))
+            cmd = 'puppet apply --certname={} puppet/manifests/default.pp'
+            sudo(cmd.format(vm_name))
