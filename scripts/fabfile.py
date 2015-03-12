@@ -15,18 +15,16 @@ import shutil
 import yaml
 import sys
 
-from aws_ops import run_instance
 from aws_ops import get_connection
+from aws_ops import get_only_instances
+
+from aws_ops import run_instance
 from aws_ops import stop_instances
 from aws_ops import terminate_instances
 from aws_ops import quote_items
-from aws_ops import get_only_instances
 
-from aws_ops import instance_names
-from aws_ops import instance_values
-
-from aws_ops import reservation_names
-from aws_ops import reservation_values
+from aws_ops import instance_names, instance_values
+from aws_ops import reservation_names, reservation_values
 
 from aws_ops import combine_name_values
 
@@ -102,8 +100,7 @@ def get_ssh_key(key_name):
 
 def get_ip_address(instance, key_name):
     conn = get_connection()
-    instances = get_only_instances(
-            conn, filters={'key_name': instance})
+    instances = get_only_instances(conn, filters={'key_name': instance})
     ip_address = None
     running_instances = []
     pending_instances = []

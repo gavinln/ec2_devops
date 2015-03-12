@@ -100,7 +100,7 @@ def print_reservation(reservation):
 
 def get_all_instances(conn):
     reservations = conn.get_all_instances(
-            filters={'subnet-id': 'subnet-0fca106a'})
+        filters={'subnet-id': 'subnet-0fca106a'})
     instances = []
     for reservation in reservations:
         instances.extend(get_instances(reservation))
