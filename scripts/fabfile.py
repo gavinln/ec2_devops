@@ -1,8 +1,10 @@
 from __future__ import print_function
 
 from fabric.api import run, env, task, roles, local, lcd
-from fabric.api import open_shell, put
+from fabric.api import open_shell, put, cd, sudo
 from fabric.api import settings
+
+from fabric.contrib.files import exists
 
 import os
 import shutil
@@ -53,6 +55,15 @@ def check_host_connection(task_name):
             'host connection info'
         print(msg.format(task_name))
         sys.exit(1)
+
+
+def get_project_name():
+    ''' gets the project root directory name assuming the current
+        directory is a child of the project root directory
+    '''
+    root_dir = os.path.normpath(os.path.join(script_dir, '..'))
+    project_name = os.path.basename(root_dir)
+    return project_name
 
 
 @task
@@ -156,8 +167,6 @@ def upload():
     ''' upload project to a ec2 instance '''
     check_host_connection('upload')
     root_dir = os.path.normpath(os.path.join(script_dir, '..'))
-
-    print(root_dir)
     project_name = os.path.basename(root_dir)
     dest_name = '~/' + project_name
 
@@ -168,13 +177,20 @@ def upload():
     for filename in files:
         if filename not in ignore_files:
             local_file = os.path.join(root_dir, filename)
-            print(local_file)
             put(local_file, dest_name)
 
 
-'''
-Need to install puppet modules
-puppet/install_puppet_modules.sh
-
-puppet apply --modulepath=puppet/manifests puppet/manifests/default.pp
-'''
+@task
+def puppet_apply():
+    ''' install puppet modules & runs manifests '''
+    check_host_connection('puppet_apply')
+    project_name = get_project_name()
+    project_root = '~/' + project_name
+    if not exists(project_root):
+        print('Project {} does not exist of host {}'.format(
+            project_root, project_name))
+    else:
+        with cd(project_root):
+            run('chmod +x ./puppet/install_puppet_modules.sh')
+            sudo('./puppet/install_puppet_modules.sh')
+            sudo('puppet apply puppet/manifests/default.pp')
