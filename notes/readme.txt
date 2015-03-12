@@ -38,5 +38,29 @@ ec2 -l
 ec2 start:celery_redis
 
 6. List instances
+ec2 instances
+
+7. Connect to instance
+ec2 ssh
+
+8. Connect to instance by specifying host
+ec2 host:celery_redis ssh
+
+9. Upload project to ec2
+ec2 host:celery_redis upload
+
+10. Provision machine
+ec2 host:celery_redis puppet_apply
+
+Need to solve upload issue
+1. sftp
+2. rsync
+3. tar, gzip
+4. git
+
+To setup zsh
+cd ec2_devops/scripts
+chmod +x ./zsh_setup.sh
+./zsh_setup.sh
 
 
