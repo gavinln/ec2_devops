@@ -1,3 +1,7 @@
+'''
+TODO: May need to fix error in
+http://askubuntu.com/questions/59458/error-message-when-i-run-sudo-unable-to-resolve-host-none
+'''
 from __future__ import print_function
 
 from fabric.api import run, env, task, roles, local, lcd
@@ -155,8 +159,8 @@ def host(instance=None):
     pem_path = get_ssh_key(key_name)
     user = 'ubuntu'
     if ip_address:
-        print('Setting host: {}@{}'.format(user, ip_address))
-        print('Setting key_file: {}'.format(pem_path))
+        # print('Setting host: {}@{}'.format(user, ip_address))
+        # print('Setting key_file: {}'.format(pem_path))
         env.user = 'ubuntu'
         env.hosts = [ip_address]
         env.key_filename = pem_path
