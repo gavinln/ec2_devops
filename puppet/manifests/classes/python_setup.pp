@@ -2,8 +2,12 @@
 class python_setup {
     case $operatingsystem {
         ubuntu: {
-            package { "python-pip":
+            package { "python-dev":
                 ensure => installed
+            }
+            package { "python-pip":
+                ensure => installed,
+                require => Package['python-dev']
             }
             package { 'fabric':
                 ensure => installed,
