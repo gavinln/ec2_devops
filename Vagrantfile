@@ -73,11 +73,11 @@ Vagrant.configure(2) do |config|
   # config.vm.provision "shell", inline: $script
   config.vm.provision "shell", path: 'puppet/install_puppet_modules.sh'
 
-  config.vm.define :celery_redis, autostart: false do |celery_redis|
-    celery_redis.vm.provision "puppet" do |puppet|
+  config.vm.define :ubuntu_trusty, autostart: false do |machine|
+    machine.vm.provision "puppet" do |puppet|
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
-      puppet.options = "--certname=%s" % :celery_redis
+      puppet.options = "--certname=%s" % :ubuntu_trusty
       # puppet.hiera_config_path = "hiera.yaml"
       # puppet.options = "--verbose --debug"
       # need to have git setup on the host to work correctly

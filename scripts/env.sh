@@ -6,12 +6,10 @@ DEPLOY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 export AWS_CONFIG_FILE=/vagrant/do_not_checkin/aws.cfg
 export BOTO_CONFIG=/vagrant/do_not_checkin/boto.cfg
+export EC2_REGION=us-west-2
 
-function system-info() {
+function ec2-fabfile() {
   fab -f $DEPLOY_DIR/fabfile.py $*
 }
 
-alias si='system-info'
-alias si-host-type='system-info host-type'
-alias si-ssh-config='system-info ssh-config'
-
+alias ec2='ec2-fabfile'

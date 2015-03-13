@@ -10,7 +10,7 @@ Exec {
     path => "/usr/local/bin:/usr/bin:/usr/sbin:/sbin:/bin",
 }
 
-node 'celery_redis' {
+node 'ubuntu_trusty' {
     class {
         init: ;
         python_setup:;

@@ -10,11 +10,13 @@ from fabric.api import open_shell, put, cd, sudo
 from fabric.api import settings
 
 from fabric.contrib.files import exists
+from fabric.contrib.project import rsync_project
 
 import os
 import shutil
 import yaml
 import sys
+import platform
 
 from aws_ops import get_connection
 from aws_ops import get_only_instances
@@ -162,11 +164,14 @@ def host(instance=None, ip=None):
     key_name = cfg_instance['key_name']
     ip_address = get_ip_address(instance, key_name, ip)
     pem_path = get_ssh_key(key_name)
+# if only linux need to copy the private key to ~/.ssh/ (after creating dir)
+# change permissions to chmod 400 and then use key
+    print(platform.system())
     user = 'ubuntu'
     if ip_address:
         # print('Setting host: {}@{}'.format(user, ip_address))
         # print('Setting key_file: {}'.format(pem_path))
-        env.user = 'ubuntu'
+        env.user = user
         env.hosts = [ip_address]
         env.key_filename = pem_path
 
@@ -205,3 +210,10 @@ def puppet_apply():
             vm_name, ext = os.path.splitext(os.path.basename(env.key_filename))
             cmd = 'puppet apply --certname={} puppet/manifests/default.pp'
             sudo(cmd.format(vm_name))
+
+@task
+def rsync():
+    check_host_connection('host')
+    project_name = get_project_name()
+    project_root = '~/' + project_name
+    rsync_project(remote_dir=project_root, local_dir='.')

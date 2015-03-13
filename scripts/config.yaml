@@ -1,9 +1,9 @@
-celery_redis:
-  image_id: ami-5c120b19
-  key_name: celery_redis
+ubuntu_trusty:
+  image_id: ami-29ebb519
+  key_name: ubuntu_trusty
   instance_type: t2.micro
   security_group_ids:
-    - sg-3be7485e
+    - sg-89eedbec
 
 angular:
   image_id: ami-29ebb519
