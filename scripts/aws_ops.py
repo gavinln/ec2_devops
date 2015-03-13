@@ -133,8 +133,7 @@ def stop_instances(conn):
         conn.stop_instances(instance)
 
 
-def terminate_instances(conn):
-    filters = {'key_name': ['celery_redis', 'angular']}
+def terminate_instances(conn, filters=None):
     instances = get_only_instances(conn, filters=filters)
     for instance in instances:
         conn.terminate_instances(instance.id)

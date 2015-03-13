@@ -11,7 +11,3 @@ angular:
   instance_type: t2.small
   security_group_ids:
     - sg-89eedbec
-
-workers:
-  - worker0
-  - worker1

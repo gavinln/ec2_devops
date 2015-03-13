@@ -93,7 +93,13 @@ def start(instance=None):
 def terminate():
     ''' terminate ec2 instances '''
     conn = get_connection()
-    terminate_instances(conn)
+    keys = []
+    for instance_name in config:
+        key_name = config[instance_name]['key_name']
+        if key_name:
+            keys.append(key_name)
+    filters = {'key_name': keys}
+    terminate_instances(conn, filters=filters)
 
 
 def get_ssh_key(key_name):
