@@ -27,6 +27,14 @@ node 'angular' {
     }
 }
 
+node 'docker' {
+    class {
+        init: ;
+        python_setup:;
+        ohmyzsh_setup:;
+        docker:;
+    }
+}
 
 
 
