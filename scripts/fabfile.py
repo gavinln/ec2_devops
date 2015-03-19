@@ -18,18 +18,18 @@ import yaml
 import sys
 import platform
 
-from aws_ops import get_connection
-from aws_ops import get_only_instances
+from ec2_ops import get_connection
+from ec2_ops import get_only_instances
 
-from aws_ops import run_instances
-from aws_ops import stop_instances
-from aws_ops import terminate_instances
-from aws_ops import quote_items
+from ec2_ops import run_instances
+from ec2_ops import stop_instances
+from ec2_ops import terminate_instances
+from ec2_ops import quote_items
 
-from aws_ops import instance_names, instance_values
-from aws_ops import reservation_names, reservation_values
+from ec2_ops import instance_names, instance_values
+from ec2_ops import reservation_names, reservation_values
 
-from aws_ops import combine_name_values
+from ec2_ops import combine_name_values
 
 script_dir = os.path.dirname(__file__)
 
