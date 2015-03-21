@@ -1,0 +1,14 @@
+python_http:
+  local: 80
+  remote: 8080
+  domain: localhost
+
+flower:
+  local: 8000
+  remote: 5555
+  domain: localhost
+
+misc:
+  local: 8080
+  remote: 8080
+  domain: localhost

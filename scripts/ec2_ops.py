@@ -9,16 +9,29 @@ import datetime as dt
 from boto import ec2
 import os
 import sys
+import tasks_common as tc
 
 
-def get_connection():
-    region_key = 'EC2_REGION'
-    if region_key not in os.environ:
-        print('Environment variable {} not set'.format(
-            region_key))
-        sys.exit(1)
+def get_regions():
+    regions = []
+    for region in ec2.regions():
+        regions.append(region.name)
+    return regions
 
-    ec2_region = os.environ['EC2_REGION']
+
+def get_connection(region=None):
+    ''' if no region is specifed uses the EC2_REGION variable '''
+    if region is None:
+        region_key = 'EC2_REGION'
+        if region_key not in os.environ:
+            print('Environment variable {} not set'.format(
+                region_key))
+            sys.exit(1)
+
+        ec2_region = os.environ['EC2_REGION']
+    else:
+        ec2_region = region
+
     conn = ec2.connect_to_region(ec2_region)
     return conn
 
@@ -30,21 +43,24 @@ apt-get install puppet-common -y
 """
 
 
-def run_instances(conn, image_id='ami-5c120b19',
-                  key_name='celery_redis', instance_type='t2.micro',
-                  security_group_ids=None, subnet_id=None):
-#def run_instances(conn, image_id='ami-29ebb519', key_name='angular',
-#                  instance_type='t2.micro', security_group_ids=None,
-#                  subnet_id=None):
+def run_instances(conn, image_id, key_name, instance_type,
+                  security_group_ids, subnet_id):
+    ec2_region = os.environ['EC2_REGION']
+    ec2 = {
+        'region': ec2_region, 'image_id': image_id, 'key_name': key_name,
+        'instance_type': instance_type,
+        'security_group_ids': security_group_ids,
+        'subnet_id': subnet_id
+    }
+    print('Run instances: ' + combine_name_values(ec2.keys(), ec2.values()))
     reservation = conn.run_instances(
         image_id=image_id,
         key_name=key_name,
         instance_type=instance_type,
         security_group_ids=security_group_ids,
-        #subnet_id=os.environ['SUBNET_ID'],
-        #subnet_id=subnet_id,
+        subnet_id=subnet_id,
         instance_initiated_shutdown_behavior='terminate',
-        user_data=my_code)
+        user_data=my_code, dry_run=False)
     return reservation
 
 
@@ -52,10 +68,7 @@ def get_instances(reservation):
     return [instance.id for instance in reservation.instances]
 
 
-def quote_items(items):
-    return ["'{}'".format(str(item)) for item in items]
-
-
+# TODO: move to common file
 def combine_name_values(names, values, sep='=', attr_sep=', '):
     name_values = [(name, value) for name, value in zip(
         names, values)]
@@ -74,13 +87,17 @@ def reservation_values(reservation):
 
 
 def instance_names():
-    return ['id', 'instance_type', 'state', 'image_id', 'key_name',
-            'ip_address', 'private_ip_address', 'launch_time', 'Name']
+    return ['region', 'id', 'instance_type', 'state', 'image_id',
+            'key_name', 'ip_address', 'private_ip_address', 'launch_time',
+            'Name']
 
 
 def instance_values(instance):
     values = [instance.__getattribute__(
         attribute) for attribute in instance_names()[:-1]]
+
+    # convert RegionInfo to string
+    values[0] = values[0].name
 
     def blank_if_none(item):
         return item if item else ''
@@ -98,13 +115,6 @@ def instance_values(instance):
     else:
         values.append('')
     return values
-
-
-def print_reservation(reservation):
-    print('Reservation: {}'.format(reservation.id))
-    instances = quote_items(get_instances(reservation))
-    instances_str = ', '.join(instances)
-    print('\tInstances: [{}]'.format(instances_str))
 
 
 def get_all_instances(conn):
@@ -133,7 +143,9 @@ def stop_instances(conn):
         conn.stop_instances(instance)
 
 
-def terminate_instances(conn, filters=None):
+def terminate_instances(conn):
+    filters = {'instance_type': 't2.medium'}
     instances = get_only_instances(conn, filters=filters)
     for instance in instances:
         conn.terminate_instances(instance.id)
+    return len(instances)
