@@ -53,7 +53,7 @@ def start(instance=None):
 def terminate():
     ''' terminate ec2 instances '''
     conn = get_connection()
-    instance_count = terminate_instances(conn)
+    instance_count = terminate_instances(conn, tc.get_key_names(config))
     print('Terminated {} instances'.format(instance_count))
 
 

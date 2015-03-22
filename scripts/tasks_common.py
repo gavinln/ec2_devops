@@ -60,6 +60,14 @@ def check_instance(config, instance, ip=None):
         print('ip should be either "public" or unspecified (default private)')
 
 
+def get_key_names(config):
+    ''' gets all the key_names '''
+    key_names = []
+    for instance in config:
+        key_names.append(config[instance]['key_name'])
+    return key_names
+
+
 def check_host_connection(env, task_name, validate_ip=True):
     if any([env.user is None,
            env.key_filename is None]):

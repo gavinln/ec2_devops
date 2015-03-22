@@ -143,8 +143,8 @@ def stop_instances(conn):
         conn.stop_instances(instance)
 
 
-def terminate_instances(conn):
-    filters = {'instance_type': 't2.medium'}
+def terminate_instances(conn, key_names):
+    filters = {'key-name': key_names}
     instances = get_only_instances(conn, filters=filters)
     for instance in instances:
         conn.terminate_instances(instance.id)
