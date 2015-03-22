@@ -10,4 +10,4 @@ Clean up
 	Add install of fabric
 	Add install of boto
 
-
+# storm add --id_file=~/.ssh/github_rsa github.com git@github.com
