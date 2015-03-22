@@ -1,7 +1,7 @@
 ubuntu_trusty:
   image_id: ami-29ebb519
   key_name: ubuntu_trusty
-  instance_type: t2.medium
+  instance_type: t2.micro
   security_group_ids:
     - sg-89eedbec
 
@@ -16,6 +16,6 @@ angular:
 docker:
   image_id: ami-29ebb519
   key_name: docker
-  instance_type: t2.small
+  instance_type: t2.micro
   security_group_ids:
     - sg-89eedbec
