@@ -4,6 +4,7 @@ New features
 Enhancements
 	Improve README.md
 	When ssh fails suggest public
+	Rename env.bat set_env.bat (env is a git bash program)
 Clean up
 	Add install of python (miniconda)
 	Add install of fabric
