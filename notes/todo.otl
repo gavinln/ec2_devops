@@ -3,6 +3,7 @@ New features
 	Add remote tunnel to config.yaml
 Enhancements
 	Improve README.md
+	When ssh fails suggest public
 Clean up
 	Add install of python (miniconda)
 	Add install of fabric
