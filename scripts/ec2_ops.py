@@ -9,7 +9,6 @@ import datetime as dt
 from boto import ec2
 import os
 import sys
-import tasks_common as tc
 
 
 def get_regions():

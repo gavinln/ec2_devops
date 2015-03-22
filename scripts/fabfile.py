@@ -18,13 +18,14 @@ import yaml
 import sys
 import platform
 
+import tasks_common as tc
+
 from ec2_ops import get_connection
 from ec2_ops import get_only_instances
 
 from ec2_ops import run_instances
 from ec2_ops import stop_instances
 from ec2_ops import terminate_instances
-from ec2_ops import quote_items
 
 from ec2_ops import instance_names, instance_values
 from ec2_ops import reservation_names, reservation_values
@@ -46,7 +47,7 @@ def check_instance(config, instance, ip=None):
         print('No instance specified')
 
     if instance not in config.keys():
-        instances = quote_items(config.keys())
+        instances = tc.quote_items(config.keys())
         instance_str = ', '.join(instances)
         print('instance should be one of {}'.format(instance_str))
         sys.exit(1)
