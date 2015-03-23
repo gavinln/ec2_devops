@@ -9,5 +9,6 @@ Clean up
 	Add install of python (miniconda)
 	Add install of fabric
 	Add install of boto
+	Move installation of puppet to shell script
 
 # storm add --id_file=~/.ssh/github_rsa github.com git@github.com
