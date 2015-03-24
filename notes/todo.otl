@@ -11,4 +11,10 @@ Clean up
 	Add install of boto
 	Move installation of puppet to shell script
 
+Docker images
+	Java
+		https://registry.hub.docker.com/_/java/
+	Tomcat
+		https://registry.hub.docker.com/_/tomcat/
+
 # storm add --id_file=~/.ssh/github_rsa github.com git@github.com
