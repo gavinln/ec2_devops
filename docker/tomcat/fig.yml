@@ -1,0 +1,7 @@
+main:
+    build: .
+    volumes:
+        - /usr/local/tomcat
+    ports:
+        - "8888:8080"
+

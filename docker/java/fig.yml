@@ -1,0 +1,7 @@
+main:
+    build: .
+    volumes:
+        - /usr/src/myapp
+    ports:
+        - "3000"
+
