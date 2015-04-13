@@ -26,5 +26,6 @@ fi
 # setup ohmyzsh plugins
 sed -i "s/plugins=(git)/plugins=(git fabric aws)/" $ZSHRC
 
-sudo chsh -s /bin/zsh $USER
+echo To enable zsh for the current user run:
+echo sudo chsh -s /bin/zsh $USER
 
