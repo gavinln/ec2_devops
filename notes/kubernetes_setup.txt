@@ -1,0 +1,52 @@
+To use Docker with sudo
+1. Add the current user to the Docker group
+sudo gpasswd -a ${USER} docker
+
+2. Restart Docker
+sudo service docker restart
+
+
+To start Kubernetes on a single node
+1. Change to the Docker kubernetes directory
+cd /vagrant/docker/kubernetes
+
+2. Run etcd
+sudo ./etcd_run.sh
+
+3. Run the Kubernetes master
+sudo ./master_run.sh
+
+4. Run the service proxy
+sudo ./proxy_run.sh
+
+5. Get the kubectl binary
+./get_kubectl.sh
+
+6. Display the Kubernetes nodes
+./kubectl get nodes
+
+7. Forward the cluster port over ssh
+ssh -L8080:localhost:8080
+
+8. Display the REST api by opening the browser to
+http://localhost:8080/
+
+10. Run the nginx container
+./kubectl -s http://localhost:8080 run-container nginx --image=nginx --port=80
+./kubectl expose rc nginx --port=80
+./kubectl get pods
+./kubectl get service
+./kubectl get rc nginx
+./kubectl describe service nginx
+
+./kubectl stop rc nginx
+./kubectl stop service nginx
+
+docker stop kubelet
+./kubectl stop pods --all
+
+Stop using docker
+etcd, pause controller, apiserver, scheduler
+docker ps -aq
+docker stop $(!!)
+docker rm $(!!)
