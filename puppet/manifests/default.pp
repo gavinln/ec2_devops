@@ -33,7 +33,10 @@ node 'docker' {
         python_setup:;
         fig_setup: require => Class[python_setup];
         ohmyzsh_setup:;
-        docker:;
+        docker:
+            version => '1.6.0',
+            tcp_bind    => 'tcp://0.0.0.0:2375',
+            socket_bind => 'unix:///var/run/docker.sock';
     }
 }
 

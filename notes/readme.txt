@@ -63,4 +63,13 @@ cd ec2_devops/scripts
 chmod +x ./zsh_setup.sh
 ./zsh_setup.sh
 
+Connect from Windows docker client
+set DOCKER_HOST=192.168.33.10:2375
+docker -H tcp://192.168.33.10:2375 ps
+
+Make sure docker server binds to 
+version => '1.6.0', # first version installed with chocolatey
+tcp_bind    => 'tcp://0.0.0.0:2375',
+socket_bind => 'unix:///var/run/docker.sock';
+
 
