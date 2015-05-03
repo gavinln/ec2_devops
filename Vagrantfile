@@ -74,7 +74,10 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: 'puppet/install_puppet_modules.sh'
 
   config.vm.define :ubuntu_trusty, autostart: false do |machine|
+
+    machine.vm.network "forwarded_port", guest: 22, host: 2200
     machine.vm.provision "puppet" do |puppet|
+
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
       puppet.options = "--certname=%s" % :ubuntu_trusty
