@@ -83,11 +83,6 @@ Vagrant.configure(2) do |config|
       puppet.options = "--certname=%s" % :ubuntu_trusty
       # puppet.hiera_config_path = "hiera.yaml"
       # puppet.options = "--verbose --debug"
-      # need to have git setup on the host to work correctly
-      puppet.facter = {
-        "git_name"    => `git config --get user.name`,
-        "git_email"   => `git config --get user.email`
-      }
     end
   end
 
