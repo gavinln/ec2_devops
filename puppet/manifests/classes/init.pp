@@ -6,13 +6,22 @@ class init {
     }
     case $operatingsystem {
         ubuntu: {
-            exec { "apt-update":
+            exec { "update_apt":
                 command => "sudo apt-get update",
             }
-            Exec["apt-update"] -> Package <| |>
-            $misc_packages = ['git-core']
+            Exec["update_apt"] -> Package <| |>
+            $misc_packages = ['git-core', 'tmux']
             package { $misc_packages:
                 ensure => present,
+            }
+            package { 'autojump':
+                ensure => present,
+                require => Exec['update_apt'];
+            }
+            file { '/etc/profile.d/autojump.sh':
+                ensure => present,
+                source => '/usr/share/autojump/autojump.sh',
+                require => Package['autojump']
             }
 #            exec { 'setup-git-user':
 #                command => "$git_cmd user.name $::git_name",
