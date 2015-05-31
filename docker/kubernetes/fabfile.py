@@ -42,7 +42,7 @@ def services():
 def rc():
     ' get list of services'
     kube = os.path.join(script_dir, 'kubectl')
-    local('{} get rc nginx'.format(kube))
+    local('{} get rc -l run-container=nginx'.format(kube))
 
 
 @task
