@@ -97,6 +97,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.define :docker, autostart: false do |machine|
     machine.vm.hostname = "docker"
+    machine.vm.network "forwarded_port", guest: 2375, host: 2375
     machine.vm.provision "puppet" do |puppet|
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
