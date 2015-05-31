@@ -104,4 +104,14 @@ Vagrant.configure(2) do |config|
       puppet.options = "--certname=%s" % :docker
     end
   end
+
+  config.vm.define :kubernetes, autostart: false do |machine|
+    machine.vm.hostname = "k8s"
+    machine.vm.network "forwarded_port", guest: 2375, host: 2375
+    machine.vm.provision "puppet" do |puppet|
+      puppet.manifest_file  = "default.pp"
+      puppet.manifests_path = "puppet/manifests"
+      puppet.options = "--certname=%s" % :k8s
+    end
+  end
 end
