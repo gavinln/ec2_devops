@@ -33,12 +33,19 @@ node 'docker' {
         python_setup:;
         fig_setup: require => Class[python_setup];
         ohmyzsh_setup:;
-        docker:
-            version => '1.6.0',
-            tcp_bind    => 'tcp://0.0.0.0:2375',
-            socket_bind => 'unix:///var/run/docker.sock';
+        docker_setup:;
     }
 }
 
+node 'k8s' {
+    class {
+        init: ;
+        python_setup:;
+        fig_setup: require => Class[python_setup];
+        ohmyzsh_setup:;
+        docker_setup:;
+        kubernetes_setup: require => Class[docker_setup];
+    }
+}
 
 
