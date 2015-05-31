@@ -5,6 +5,10 @@ class docker_setup {
         tcp_bind    => 'tcp://0.0.0.0:2375',
         socket_bind => 'unix:///var/run/docker.sock';
     }
+# add users to docker
+# class { 'docker':
+#   docker_users => [ 'user1', 'user2' ],
+# }
     user {'vagrant':
         ensure => 'present'
     }

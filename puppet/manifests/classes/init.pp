@@ -23,15 +23,12 @@ class init {
                 source => '/usr/share/autojump/autojump.sh',
                 require => Package['autojump']
             }
-#            exec { 'setup-git-user':
-#                command => "$git_cmd user.name $::git_name",
+# does not work as it raises and error
+#            exec { 'update_autojump':
+#                command => 'autojump -a /vagrant',
 #                environment => "HOME=/home/vagrant",
-#                require => Package['git-core'],
-#            } 
-#            exec { 'setup-git-email':
-#                command => "$git_cmd user.email $::git_email",
-#                environment => "HOME=/home/vagrant",
-#                require => Package['git-core']
+#                user => "vagrant",
+#                require => Package['autojump'];
 #            }
         }
     }
