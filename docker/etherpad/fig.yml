@@ -1,0 +1,10 @@
+epsql:
+    image: mysql
+    environment:
+        - MYSQL_ROOT_PASSWORD=password
+editor:
+    image: tvelocity/etherpad-lite
+    links:
+        - epsql:mysql
+    ports:
+        - "9001:9001"
