@@ -112,7 +112,7 @@ Vagrant.configure(2) do |config|
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
       puppet.options = "--certname=%s" % :k8s
-      puppet.options = "--verbose --debug"
+      # puppet.options = "--verbose --debug"
     end
   end
 end
