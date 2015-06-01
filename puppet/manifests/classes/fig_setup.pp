@@ -7,6 +7,11 @@ class fig_setup {
                 provider => pip,
                 require => Package['python-pip']
             }
+            # package { 'docker-compose':
+            #     ensure => installed,
+            #     provider => pip,
+            #     require => Package['python-pip']
+            # }
         }
     }
 }
