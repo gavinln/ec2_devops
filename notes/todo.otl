@@ -22,3 +22,4 @@ Docker images
 Install kubernetes
 	Install kubectl using Puppet
 	Install kubectl bash completions using Puppet
+Enable ssh-agent forwarding in Vagrantfile
