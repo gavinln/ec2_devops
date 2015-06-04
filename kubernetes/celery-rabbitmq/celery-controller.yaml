@@ -15,7 +15,7 @@ spec:
         component: celery
     spec:
       containers:
-      - image: endocode/celery-app-add
+      - image: celery_image2
         name: celery
         ports:
         - containerPort: 5672

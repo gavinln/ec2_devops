@@ -17,5 +17,7 @@
 # Run the celery worker
 /usr/local/bin/celery -A celery_conf worker -f /data/celery.log &
 
+while true; do echo 'Hit CTRL+C'; sleep 1; done
+
 # Start firing periodic tasks automatically
-python /data/run_tasks.py
+#python /data/run_tasks.py
