@@ -14,3 +14,6 @@ PUPPET_INSTALL='puppet module install --module_repository http://forge.puppetlab
 
 (puppet module list | grep willdurand-nodejs) ||
     $PUPPET_INSTALL -v 1.8.3 willdurand-nodejs
+
+(puppet module list | grep maestrodev-wget) ||
+    $PUPPET_INSTALL -v 1.7.0 maestrodev-wget
