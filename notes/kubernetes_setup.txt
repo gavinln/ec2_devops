@@ -9,40 +9,42 @@ To start Kubernetes on a single node
 1. Change to the Docker kubernetes directory
 cd /vagrant/docker/kubernetes
 
-2. Run etcd
+2. Run etcd, kubernetes master, service proxy
 ./etcd_run.sh
-
-3. Run the Kubernetes master
 ./master_run.sh
-
-4. Run the service proxy
 ./proxy_run.sh
 
-6. Display the Kubernetes nodes
-kubectl get nodes
+Alternatively run all components
+./run_k8s.sh
 
-7. Forward the cluster port over ssh
-ssh -L8080:localhost:8080
+3. Display the Kubernetes nodes
+kubectl cluster-info
 
-8. Display the REST api by opening the browser to
+4. Forward the cluster port over ssh
+ssh -L 8080:localhost:8080
+
+5. Display the REST api by opening the browser to
 http://localhost:8080/
 
-10. Run the nginx container
+6. Run the nginx container
 ./nginx_run.sh
 
+7. Get info on components
 kubectl get pods
 kubectl get service
 kubectl get rc nginx
+
+8. Describe the components
+kubectl describe pods nginx
 kubectl describe service nginx
+kubectl describe rc nginx
 
-./kubectl stop rc nginx
-./kubectl stop service nginx
+9. Stop the nginx container, rc and service
+kubectl stop service nginx
+kubectl stop rc nginx
 
-docker stop kubelet
-./kubectl stop pods --all
+10. Stop kubernetes
+docker ps -aq | xargs docker stop
 
-Stop using docker
-etcd, pause controller, apiserver, scheduler
-docker ps -aq
-docker stop $(!!)
-docker rm $(!!)
+11. Remove stopped containers
+docker ps -aq | xargs docker rm
