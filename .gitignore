@@ -5,4 +5,3 @@
 .vagrant
 .idea/
 do_not_checkin
-kubernetes/kubectl
