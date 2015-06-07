@@ -9,6 +9,9 @@ Vagrant.configure(2) do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
+  
+  config.vm.provision :shell,
+    :inline => 'echo "America/Los_Angeles" > /etc/timezone; dpkg-reconfigure -f noninteractive tzdata'
 
   # do not update configured box
   config.vm.box_check_update = false
