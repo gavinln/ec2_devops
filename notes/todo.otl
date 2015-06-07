@@ -20,6 +20,7 @@ Docker images
 # storm add --id_file=~/.ssh/github_rsa github.com git@github.com
 
 Install kubernetes
-	Install kubectl using Puppet
-	Install kubectl bash completions using Puppet
+	[X] Install kubectl using Puppet
+	[X] Install kubectl bash completions using Puppet
+
 Enable ssh-agent forwarding in Vagrantfile
