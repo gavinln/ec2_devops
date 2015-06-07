@@ -14,4 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-flower --broker=amqp://guest:guest@${RABBITMQ_SERVICE_SERVICE_HOST:localhost}:5672//
+unset FLOWER_SERVICE_PORT_5555_TCP_PORT
+unset FLOWER_SERVICE_SERVICE_HOST
+unset FLOWER_SERVICE_PORT_5555_TCP_PROTO
+unset FLOWER_SERVICE_SERVICE_PORT
+unset FLOWER_SERVICE_PORT
+unset FLOWER_SERVICE_PORT_5555_TCP_ADDR
+unset FLOWER_SERVICE_PORT_5555_TCP
+
+#while true; do echo 'Hit CTRL+C'; sleep 35; done
+
+flower --broker=amqp://guest:guest@${RABBITMQ_SERVICE_SERVICE_HOST}:5672//

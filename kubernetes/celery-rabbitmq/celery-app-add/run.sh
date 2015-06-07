@@ -15,9 +15,12 @@
 # limitations under the License.
 
 # Run the celery worker
-/usr/local/bin/celery -A celery_conf worker -f /data/celery.log &
+# this is automatically set so need to remove it
+unset CELERY_BROKER_URL
 
-while true; do echo 'Hit CTRL+C'; sleep 1; done
+/usr/local/bin/celery -A celery_conf worker -l INFO -f /data/celery.log &
+
+while true; do echo 'Hit CTRL+C'; sleep 35; done
 
 # Start firing periodic tasks automatically
 #python /data/run_tasks.py

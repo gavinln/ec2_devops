@@ -1,5 +1,10 @@
 FROM library/celery
 
+USER root
+RUN mkdir /data
+
+WORKDIR /data
+
 ADD celery_conf.py /data/celery_conf.py
 ADD run_tasks.py /data/run_tasks.py
 ADD run.sh /usr/local/bin/run.sh
