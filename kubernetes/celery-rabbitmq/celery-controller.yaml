@@ -15,7 +15,7 @@ spec:
         component: celery
     spec:
       containers:
-      - image: celery_image2
+      - image: celery_img
         name: celery
         ports:
         - containerPort: 5672

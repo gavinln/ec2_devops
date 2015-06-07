@@ -15,7 +15,7 @@ spec:
         component: flower
     spec:
       containers:
-      - image: endocode/flower
+      - image: flower_img
         name: flower
         ports:
         - containerPort: 5555
