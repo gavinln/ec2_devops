@@ -20,3 +20,19 @@ alias dlpsa="docker ps -a | less -S"
 function dexec() {
 	docker exec -t -i $1 bash
 }
+
+alias kgp="kubectl get pods"
+alias kgr="kubectl get rc"
+alias kgs="kubectl get services"
+
+function ksp() {
+	kubectl stop pods $1
+}
+
+function ksr() {
+	kubectl stop rc $1
+}
+
+function kss() {
+	kubectl stop services $1
+}
