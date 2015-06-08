@@ -18,6 +18,8 @@ import random
 import syslog
 import time
 
+# Need to unset CELERY_BROKER_URL before running this
+
 from celery_conf import add
 
 while True:

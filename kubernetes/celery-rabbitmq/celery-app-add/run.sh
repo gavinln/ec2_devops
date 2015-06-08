@@ -18,9 +18,9 @@
 # this is automatically set so need to remove it
 unset CELERY_BROKER_URL
 
-/usr/local/bin/celery -A celery_conf worker -l INFO -f /data/celery.log &
+/usr/local/bin/celery -A celery_conf worker -l INFO -f /data/celery.log
 
-while true; do echo 'Hit CTRL+C'; sleep 35; done
+#while true; do echo 'Hit CTRL+C'; sleep 35; done
 
 # Start firing periodic tasks automatically
 #python /data/run_tasks.py
