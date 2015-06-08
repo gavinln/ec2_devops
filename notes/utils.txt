@@ -1,0 +1,24 @@
+vifm
+Terminal based file manager (ncurses) that requires putty to work correctly
+http://vifm.info/
+
+tig
+Terminal based git browser (ncurses) that requires putty to work correctly
+https://github.com/jonas/tig
+
+fzf
+fuzzy command line finder that works best in putty
+https://github.com/junegunn/fzf
+
+peco
+Command line interactive filtering tool using unix pipes
+https://github.com/peco/peco
+
+ag
+Code seaching tool wiht a foucs on speed
+https://github.com/ggreer/the_silver_searcher
+
+Puppet module to configure shell environment
+https://github.com/pulling-strings/puppet-shell
+
+
