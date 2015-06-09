@@ -1,0 +1,73 @@
+To get the vm ready
+1. Start the VM
+vagrant up k8s
+
+2. Login to the vm
+vagrant ssh k8s
+
+To start Kubernetes on a single node
+1. Change to the Docker kubernetes directory
+cd /vagrant/kubernetes
+
+or if you have visited the directory before
+
+j kuber<tab>
+
+2. Run kubernetes components: etcd, kubernetes master, service proxy
+./run_k8s.sh
+
+3. Display the Kubernetes nodes
+kubectl cluster-info
+
+4. Forward the cluster port over ssh
+ssh -L 8080:localhost:8080
+
+5. Display the REST api by opening the browser to
+http://localhost:8080/
+
+6. Alternatively install the httpie tools to use the REST api
+sudo pip install httpie
+
+7. Get the REST api
+http :8080
+
+Create the Celery example Docker ocntainers
+1. Change ot the code diretory
+cd /vagrant/kubernetes/celery-rabbitmq
+
+2. Build the celery container
+pushd celery-app-add/
+./build.sh
+popd
+
+3. Build the flower container
+pushd flower/
+./build.sh
+popd
+
+4. Build the task container
+pushd task/
+./build.sh
+popd
+
+5. Change to the parent directory
+cd /vagrant/kubernetes/celery-rabbitmq
+
+6. Start add the replication controllers and services
+./execute.sh
+
+7. Get info on components
+kubectl get pods
+kubectl get service
+kubectl get rc
+
+To stop kubernetes
+1. Terminate the containers
+docker ps -aq | xargs docker kill
+
+2. Stop kubernetes containers
+docker ps -aq | xargs docker stop
+
+3. Remove stopped containers
+docker ps -aq | xargs docker rm
+
