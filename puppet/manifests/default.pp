@@ -14,7 +14,7 @@ node 'ubuntu_trusty' {
     class {
         init: ;
         python_setup:;
-        ohmyzsh_setup:;
+        # ohmyzsh_setup:;
     }
 }
 
@@ -45,6 +45,14 @@ node 'k8s' {
         ohmyzsh_setup:;
         docker_setup:;
         kubernetes_setup: require => Class[docker_setup];
+    }
+}
+
+node 'caffe' {
+    class {
+        init: ;
+        python_setup:;
+        caffe_setup: require => Class[python_setup];
     }
 }
 

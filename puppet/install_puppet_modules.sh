@@ -17,3 +17,10 @@ PUPPET_INSTALL='puppet module install --module_repository http://forge.puppetlab
 
 (puppet module list | grep maestrodev-wget) ||
     $PUPPET_INSTALL -v 1.7.0 maestrodev-wget
+
+# (puppet module list | grep puppetlabs-reboot) ||
+#     $PUPPET_INSTALL -v 1.1.0 puppetlabs-reboot
+# 
+# (puppet module list | grep wilrnh-cuda) ||
+#     $PUPPET_INSTALL -v 0.1.0 wilrnh-cuda
+
