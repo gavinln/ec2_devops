@@ -117,4 +117,13 @@ Vagrant.configure(2) do |config|
       # puppet.options = "--verbose --debug"
     end
   end
+
+  config.vm.define :caffe, autostart: false do |machine|
+    machine.vm.provision "puppet" do |puppet|
+
+      puppet.manifest_file  = "default.pp"
+      puppet.manifests_path = "puppet/manifests"
+      puppet.options = "--certname=%s" % :caffe
+    end
+  end
 end
