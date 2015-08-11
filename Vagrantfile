@@ -126,4 +126,13 @@ Vagrant.configure(2) do |config|
       puppet.options = "--certname=%s" % :caffe
     end
   end
+
+  config.vm.define :nltk, autostart: false do |machine|
+    machine.vm.provision "puppet" do |puppet|
+
+      puppet.manifest_file  = "default.pp"
+      puppet.manifests_path = "puppet/manifests"
+      puppet.options = "--certname=%s" % :nltk
+    end
+  end
 end

@@ -57,3 +57,10 @@ node 'caffe' {
 }
 
 
+node 'nltk' {
+    class {
+        init: ;
+        python_setup:;
+        caffe_setup: require => Class[python_setup];
+    }
+}

@@ -72,4 +72,23 @@ version => '1.6.0', # first version installed with chocolatey
 tcp_bind    => 'tcp://0.0.0.0:2375',
 socket_bind => 'unix:///var/run/docker.sock';
 
+For caffe installation and instructions
+https://github.com/BVLC/caffe/wiki/Ubuntu-14.04-VirtualBox-VM
+
+Modify file below
+vim Makefile.config
+
+uncomment the line # CPU_ONLY := 1 (In a virtual machine we do not have access to the the GPU)
+Under PYTHON_INCLUDE, replace /usr/lib/python2.7/dist-packages/numpy/core/include with /usr/local/lib/python2.7/dist-packages/numpy/core/include (i.e. add /local)
+
+If you get the error: libdc1394 error: Failed to initialize libdc1394
+See this: http://stackoverflow.com/questions/12689304/ctypes-error-libdc1394-error-failed-to-initialize-libdc1394
+Run the following line:
+sudo ln /dev/null /dev/raw1394
+
+To run ipython notebook need the following
+sudo pip install pyzmq
+sudo pip install jinja2
+sudo pip install tornado
+sudo pip install jsonschema
 

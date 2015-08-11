@@ -1,4 +1,5 @@
 # install caffe
+# depends on python_setup.pp
 class caffe_setup {
     case $operatingsystem {
         ubuntu: {
@@ -38,17 +39,6 @@ class caffe_setup {
             package { $caffe_packages :
                 ensure => installed
             }
-# Cython>=0.19.2
-# scikit-image>=0.9.3
-# h5py>=2.2.0
-# leveldb>=0.191
-# networkx>=1.8.1
-# nose>=1.3.0
-# python-dateutil>=1.4,<2
-# protobuf>=2.5.0
-# python-gflags>=2.0
-# Pillow>=2.3.0
-# six>=1.1.0
             # cython has to be installed before h5py
             package { 'cython':
                 ensure => installed,
