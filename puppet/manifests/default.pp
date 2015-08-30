@@ -34,6 +34,7 @@ node 'docker' {
         fig_setup: require => Class[python_setup];
         ohmyzsh_setup:;
         docker_setup:;
+        docker_compose_setup: require => Class[docker_setup];
     }
 }
 
@@ -61,6 +62,6 @@ node 'nltk' {
     class {
         init: ;
         python_setup:;
-        caffe_setup: require => Class[python_setup];
+        nltk_setup: require => Class[python_setup];
     }
 }

@@ -24,3 +24,8 @@ PUPPET_INSTALL='puppet module install --module_repository http://forge.puppetlab
 # (puppet module list | grep wilrnh-cuda) ||
 #     $PUPPET_INSTALL -v 0.1.0 wilrnh-cuda
 
+(puppet module list | grep garystafford-docker_compose) ||
+    $PUPPET_INSTALL -v 0.2.2 garystafford-docker_compose
+
+
+
