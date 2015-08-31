@@ -10,8 +10,8 @@ Vagrant.configure(2) do |config|
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
   
-  config.vm.provision :shell,
-    :inline => 'echo "America/Los_Angeles" > /etc/timezone; dpkg-reconfigure -f noninteractive tzdata'
+#  config.vm.provision :shell,
+#    :inline => 'echo "America/Los_Angeles" > /etc/timezone; dpkg-reconfigure -f noninteractive tzdata'
 
   # do not update configured box
   config.vm.box_check_update = false
@@ -96,14 +96,14 @@ Vagrant.configure(2) do |config|
     end
   end
 
-
-  config.vm.define :docker, autostart: false do |machine|
-    machine.vm.hostname = "docker"
+  name = 'docker'
+  config.vm.define name, autostart: false do |machine|
+    machine.vm.hostname = name
     machine.vm.network "forwarded_port", guest: 2375, host: 2375
     machine.vm.provision "puppet" do |puppet|
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
-      puppet.options = "--certname=%s" % :docker
+      puppet.options = "--certname=%s --hiera_config=/vagrant/hiera.yaml" % name
     end
   end
 

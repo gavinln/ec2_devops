@@ -28,6 +28,8 @@ node 'angular' {
 }
 
 node 'docker' {
+    hiera_include('classes')
+
     class {
         init: ;
         python_setup:;

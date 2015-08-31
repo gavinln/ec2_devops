@@ -1,0 +1,4 @@
+---
+classes:
+  - timezone
+timezone::timezone: 'America/Los_Angeles'
