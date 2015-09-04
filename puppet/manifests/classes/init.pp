@@ -23,13 +23,6 @@ class init {
                 source => '/usr/share/autojump/autojump.sh',
                 require => Package['autojump']
             }
-# does not work as it raises and error
-#            exec { 'update_autojump':
-#                command => 'autojump -a /vagrant',
-#                environment => "HOME=/home/vagrant",
-#                user => "vagrant",
-#                require => Package['autojump'];
-#            }
         }
     }
 }

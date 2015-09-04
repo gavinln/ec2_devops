@@ -103,7 +103,7 @@ Vagrant.configure(2) do |config|
     machine.vm.provision "puppet" do |puppet|
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
-      puppet.options = "--certname=%s --hiera_config=/vagrant/hiera.yaml" % name
+      puppet.options = "--certname=%s --reports store --hiera_config=/vagrant/hiera.yaml" % name
     end
   end
 
@@ -133,6 +133,16 @@ Vagrant.configure(2) do |config|
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
       puppet.options = "--certname=%s" % :nltk
+    end
+  end
+
+  name = 'haskell'
+  config.vm.define name, autostart: false do |machine|
+    machine.vm.provision "puppet" do |puppet|
+
+      puppet.manifest_file  = "default.pp"
+      puppet.manifests_path = "puppet/manifests"
+      puppet.options = "--certname=%s" % name
     end
   end
 end
