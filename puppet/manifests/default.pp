@@ -72,6 +72,6 @@ node 'haskell' {
     class {
         init: ;
         docker_setup:;
-        # docker_compose_setup: require => Class[docker_setup];
+        docker_compose_setup: require => Class[docker_setup];
     }
 }

@@ -1,0 +1,7 @@
+haskell:
+    image: haskell:7.10
+    volumes:
+        - .:/code
+    command: bash
+
+
