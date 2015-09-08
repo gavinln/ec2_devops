@@ -1,5 +1,5 @@
 haskell:
-    image: haskell:7.10
+    build: .
     volumes:
         - .:/code
     command: bash

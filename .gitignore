@@ -2,6 +2,8 @@
 *.pyc
 *.class
 *.swp
+*.o
+*.hi
 .vagrant
 .idea/
 do_not_checkin
