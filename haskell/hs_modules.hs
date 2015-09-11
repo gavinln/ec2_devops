@@ -11,4 +11,4 @@ numUniques = length . nub
 groupItems :: (Num a, Ord a) => [a] -> [(a, Int)]
 groupItems a = map (\l@(x:xs) -> (x, length l)) . L.group . sort $ a
 
-validInt x = (x > 1) && (x < 5)
+findKey key = foldr (\(k,v) acc -> if key == k then Just v else acc) Nothing
