@@ -1,5 +1,7 @@
 #!/bin/bash
 
+docker build -t ihaskell .
+
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 ip=`hostname -I | cut -f2 -d' '`
