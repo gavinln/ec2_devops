@@ -140,6 +140,7 @@ Vagrant.configure(2) do |config|
 
   name = 'haskell'
   config.vm.define name, autostart: false do |machine|
+    machine.vm.hostname = "haskell"
     machine.vm.provision "puppet" do |puppet|
 
       puppet.manifest_file  = "default.pp"
