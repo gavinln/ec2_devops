@@ -33,7 +33,7 @@ node 'docker' {
     class {
         init: ;
         python_setup:;
-        fig_setup: require => Class[python_setup];
+        #fig_setup: require => Class[python_setup];
         ohmyzsh_setup:;
         docker_setup:;
         # docker_compose_setup: require => Class[docker_setup];

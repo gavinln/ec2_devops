@@ -2,4 +2,4 @@
 classes:
   - dnsmasq
   - docker_compose
-docker_compose::version: '1.3.3'
+docker_compose::version: '1.4.2'

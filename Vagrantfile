@@ -98,14 +98,13 @@ Vagrant.configure(2) do |config|
     end
   end
 
-  name = 'docker'
-  config.vm.define name, autostart: false do |machine|
-    machine.vm.hostname = name
+  config.vm.define :docker, autostart: false do |machine|
+    machine.vm.hostname = :docker
     machine.vm.network "forwarded_port", guest: 2375, host: 2375
     machine.vm.provision "puppet" do |puppet|
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
-      puppet.options = "--certname=%s --reports store --hiera_config=/vagrant/hiera.yaml" % name
+      puppet.options = "--certname=%s --reports store --hiera_config=/vagrant/hiera.yaml" % :docker
     end
   end
 
@@ -138,14 +137,13 @@ Vagrant.configure(2) do |config|
     end
   end
 
-  name = 'haskell'
-  config.vm.define name, autostart: false do |machine|
-    machine.vm.hostname = "haskell"
+  config.vm.define :haskell, autostart: false do |machine|
+    machine.vm.hostname = :haskell
     machine.vm.provision "puppet" do |puppet|
 
       puppet.manifest_file  = "default.pp"
       puppet.manifests_path = "puppet/manifests"
-      puppet.options = "--certname=%s" % name
+      puppet.options = "--certname=%s" % :haskell
     end
   end
 end
