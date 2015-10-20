@@ -146,4 +146,14 @@ Vagrant.configure(2) do |config|
       puppet.options = "--certname=%s" % :haskell
     end
   end
+
+  config.vm.define :grafana, autostart: false do |machine|
+    machine.vm.hostname = :grafana
+    machine.vm.provision "puppet" do |puppet|
+
+      puppet.manifest_file  = "default.pp"
+      puppet.manifests_path = "puppet/manifests"
+      puppet.options = "--certname=%s" % :grafana
+    end
+  end
 end

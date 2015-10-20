@@ -75,3 +75,13 @@ node 'haskell' {
         docker_compose_setup: require => Class[docker_setup];
     }
 }
+
+node 'grafana' {
+    class {
+        init: ;
+        docker_setup:;
+        docker_compose_setup: require => Class[docker_setup];
+        python_setup:;
+        python_glances_setup: require => Class[python_setup];
+    }
+}
