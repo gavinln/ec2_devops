@@ -27,3 +27,6 @@ PUPPET_INSTALL='puppet module install --module_repository http://forge.puppetlab
 (puppet module list | grep saz-dnsmasq) ||
     $PUPPET_INSTALL -v 1.2.0 saz-dnsmasq
 
+(puppet module list | grep golja-influxdb) ||
+    $PUPPET_INSTALL -v 1.1.0 golja-influxdb
+

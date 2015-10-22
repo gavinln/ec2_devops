@@ -83,5 +83,6 @@ node 'grafana' {
         docker_compose_setup: require => Class[docker_setup];
         python_setup:;
         python_glances_setup: require => Class[python_setup];
+        influxdb_setup:;
     }
 }

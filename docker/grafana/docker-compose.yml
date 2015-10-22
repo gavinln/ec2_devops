@@ -4,11 +4,3 @@ grafana:
         - "3000:3000"
     volumes:
         - /var/lib/grafana:/var/lib/grafana
-influxdb:
-    build: .
-    ports:
-        - "8083:8083"
-        - "8086:8086"
-
-
-
