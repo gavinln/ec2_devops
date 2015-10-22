@@ -1,0 +1,32 @@
+InfluxDB admin interface at
+http://192.168.33.10:8083/
+
+To connect to influxdb shell
+/opt/influxdb/influx
+
+Type "exit" to exit
+
+Grafana is at
+http://192.168.33.10:3000/
+Use username/password admin/admin
+
+Create a database as below
+create database glances
+show databases
+use glances
+create user root with password 'root' with all privileges
+grant all privileges on glances to root
+
+Setup a data source
+Name: glances
+Type: InfluxDB 0.9.x
+
+Http settings
+Url: http://192.168.33.10:8086/
+
+InfluxDB
+Database: glances
+User: root
+Password: root
+
+
