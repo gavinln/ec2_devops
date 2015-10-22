@@ -29,4 +29,20 @@ Database: glances
 User: root
 Password: root
 
+Install telegraf
+wget http://get.influxdb.org/telegraf/telegraf_0.1.9_am d64.deb
+sudo dpkg -i telegraf_0.1.9_amd64.deb
+
+Create a database as below
+create database telegraf
+show databases
+use telegraf
+create user telegraf with password 'telegraf' with all privileges
+grant all privileges on telegraf to root
+
+Run telegraf
+/opt/telegraf/telegraf
+/opt/telegraf/telegraf -sample-config > telegraf.conf
+/opt/telegraf/telegraf -config telegraf.conf
+
 
