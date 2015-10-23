@@ -148,6 +148,9 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.define :grafana, autostart: false do |machine|
+    machine.vm.network :forwarded_port, guest: 8083, host: 8083  # influxdb web
+    machine.vm.network :forwarded_port, guest: 8086, host: 8086  # influxdb port
+
     machine.vm.hostname = :grafana
     machine.vm.provision "puppet" do |puppet|
 
