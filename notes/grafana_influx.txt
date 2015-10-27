@@ -51,4 +51,32 @@ Run telegraf
 Now edit telegraf.conf as needed
 /opt/telegraf/telegraf -config telegraf.conf
 
+Go to the dashboard
+Click on the share dashboard icon on the top
+Click on snapshot sharing
+Click on "Local Snapshot"
+http://192.168.0.110:3000/dashboard/snapshot/C9s0G9y65MNpChphCiboMt4swCY6HebF
+
+Install hubot-grafana
+npm install hubot-grafana --save
+
+Add "hubot-grafana" to external-scripts.json
+
+You need to set the environment variable HUBOT_GRAFANA_API_KEY to a Grafana API Key. You can add these from the API Keys page which you find in the Organization dropdown.
+
+export HUBOT_GRAFANA_HOST=http://192.168.0.110:3000
+export HUBOT_GRAFANA_API_KEY=eyJrIjoidlpyM2FmNHFRZVZkNFFHYUJCZGFaMFlaR1JFZlhrQXUiLCJuIjoiYXBpLWtleTEiLCJpZCI6MX0=
+
+Show list of dashboards
+hubot graf list
+
+Show the dashboard called test-dashboard
+hubot graf db test-dashboard
+
+Plot the second graph on test-dashboard
+hubot graf db test-dashboard:2
+
+
+
+
 
