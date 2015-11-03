@@ -4,3 +4,5 @@ grafana:
         - "3000:3000"
     volumes:
         - /var/lib/grafana:/var/lib/grafana
+    environment:
+        - GF_server_root_url=http://gavinnb/
