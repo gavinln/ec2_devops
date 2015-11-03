@@ -147,6 +147,15 @@ Vagrant.configure(2) do |config|
     end
   end
 
+  config.vm.define :golang, autostart: false do |machine|
+    machine.vm.provision "puppet" do |puppet|
+
+      puppet.manifest_file  = "default.pp"
+      puppet.manifests_path = "puppet/manifests"
+      puppet.options = "--certname=%s" % :golang
+    end
+  end
+
   config.vm.define :grafana, autostart: false do |machine|
     machine.vm.network :forwarded_port, guest: 8083, host: 8083  # influxdb web
     machine.vm.network :forwarded_port, guest: 8086, host: 8086  # influxdb port - may need to remove

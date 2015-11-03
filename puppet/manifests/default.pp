@@ -76,6 +76,13 @@ node 'haskell' {
     }
 }
 
+node 'golang' {
+    class {
+        init: ;
+        golang_setup:;
+    }
+}
+
 node 'grafana' {
     class {
         init: ;

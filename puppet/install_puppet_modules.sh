@@ -30,3 +30,5 @@ PUPPET_INSTALL='puppet module install --module_repository http://forge.puppetlab
 (puppet module list | grep golja-influxdb) ||
     $PUPPET_INSTALL -v 1.1.0 golja-influxdb
 
+(puppet module list | grep dcoxall-golang) ||
+    $PUPPET_INSTALL -v 1.1.1 dcoxall-golang
