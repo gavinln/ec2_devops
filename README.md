@@ -37,3 +37,8 @@ TODO add instructions here
     ```
 
 6. To access Airflow UI open a browser to http://192.168.33.10:8080/
+
+7. To access Airflow RabbitMQ interface http://192.168.33.10:15672/ with
+   username/password airflow/airflow
+
+8. To access Airflow Celery interface open a browser to http://192.168.33.10:5555/
