@@ -6,6 +6,10 @@ To connect to influxdb shell
 
 Type "exit" to exit
 
+To start Grafana
+cd /vagrant/docker/grafana
+./start_grafana_influx.sh
+
 Grafana is at
 http://192.168.33.10:3000/
 Use username/password admin/admin
