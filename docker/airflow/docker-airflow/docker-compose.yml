@@ -59,6 +59,8 @@ scheduler:
 worker:
     build: .
     restart: always
+    volumes:
+        - /vagrant/docker/airflow/dags:/usr/local/airflow/dags
     environment:
         - AIRFLOW_HOME=/usr/local/airflow
     ports:
