@@ -42,3 +42,9 @@ TODO add instructions here
    username/password airflow/airflow
 
 8. To access Airflow Celery interface open a browser to http://192.168.33.10:5555/
+
+
+cd c:\ws\ec2_devops\scripts
+set AIRFLOW_HOME=c:\ws\ec2_devops\scripts
+python C:\Users\gavin\Miniconda2\envs\airflow\Scripts\airflow worker
+python C:\Users\gavin\Miniconda2\envs\airflow\Scripts\airflow serve_logs
