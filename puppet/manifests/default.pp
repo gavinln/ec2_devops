@@ -93,3 +93,10 @@ node 'grafana' {
         influxdb_setup:;
     }
 }
+
+node 'ansible' {
+    class {
+        init: ;
+        ansible: ensure => master, require => Class[init];
+    }
+}

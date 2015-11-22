@@ -32,3 +32,6 @@ PUPPET_INSTALL='puppet module install --module_repository http://forge.puppetlab
 
 (puppet module list | grep dcoxall-golang) ||
     $PUPPET_INSTALL -v 1.1.1 dcoxall-golang
+
+(puppet module list | grep nvogel-ansible) ||
+    $PUPPET_INSTALL -v 3.0.0 nvogel-ansible
