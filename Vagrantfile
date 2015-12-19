@@ -25,6 +25,8 @@ Vagrant.configure(2) do |config|
 
   config.ssh.forward_x11 = true
 
+  config.ssh.forward_agent = true
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
